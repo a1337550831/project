@@ -21,28 +21,28 @@ public class UserController {
     private UserService userService;
 
 
-//    /**
-//     * 新增用户
-//     *
-//     * @param user 用户信息
-//     * @return 主键id
-//     */
-//    @RequestMapping(value = "/a/user",method = RequestMethod.POST)
-//    @ResponseBody
-//    public Map<String, Object> addUser(User user){
-//        logger.info(" user is : "+user);
-//        Map<String, Object> resultMap = new HashMap<>();
-//        resultMap.put("status",0);
-//        try {
-//            Integer id  = userService.addUser(user);
-//            resultMap.put("data", id);
-//        }catch (Exception e){
-//            e.getMessage();
-//            logger.error(e.getMessage());
-//            resultMap.put("status", -1);
-//        }
-//        return resultMap;
-//    }
+    /**
+     * 新增用户
+     *
+     * @param user 用户信息
+     * @return 主键id
+     */
+    @RequestMapping(value = "/a/user",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> addUser(User user){
+        logger.info(" user is : "+user);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("status",0);
+        try {
+            Integer id  = userService.addUser(user);
+            resultMap.put("data", id);
+        }catch (Exception e){
+            e.getMessage();
+            logger.error(e.getMessage());
+            resultMap.put("status", -1);
+        }
+        return resultMap;
+    }
 
 
     /**
