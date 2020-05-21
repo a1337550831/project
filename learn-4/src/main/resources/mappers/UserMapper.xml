@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- mapper:根标签，namespace：命名空间，随便写，一般保证命名空间唯一 ,如果使用映射需要-->
+
+
+<mapper namespace="dao.UserDao">
+
+    <resultMap id="userMap" type="pojo.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="qq" property="qq"/>
+        <result column="type" property="type"/>
+        <result column="time" property="time"/>
+        <result column="link" property="link"/>
+        <result column="create_at" property="createAt"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_at" property="updateAt"/>
+        <result column="update_by" property="updateBy"/>
+    </resultMap>
+
+    <sql id="common">
+		id,name,qq,name,type,time,link,create_at,create_by,update_at,update_by
+    </sql>
+
+
+    <!--    1.#{},预编译的方式preparedstatement，使用占位符替换，防止sql注入-->
+
+    <!--    2.${},普通的Statement，字符串直接拼接，不可以防止sql注入-->
+
+    <insert id="addUser" parameterType="pojo.User" useGeneratedKeys="true"  keyProperty="id">
+        INSERT user
+        (name,
+        qq,
+        type,
+        time,
+        link,
+        create_at,
+        create_by,
+        update_at,
+        update_by)
+        VALUES
+        (#{name},
+        #{qq},
+        #{type},
+        #{time},
+        #{link},
+        #{createAt},
+        #{createBy},
+        #{updateAt},
+        #{updateBy})
+    </insert>
+
+
+    <delete id="deleteUser">
+        delete from user where id = #{id}
+    </delete>
+
+
+
+
+    <update id="updateUser" parameterType="pojo.User">
+        UPDATE user SET
+        name=#{name},
+        qq=#{qq},
+        type=#{type},
+        time=#{time},
+        link=#{link},
+        create_at=#{createAt},
+        create_by=#{createBy},
+        update_at=#{updateAt},
+        update_by=#{updateBy}
+        WHERE
+        id=#{id}
+    </update>
+
+<!--    <select id="selectObject" resultType="pojo.User">-->
+<!--      select-->
+<!--      id as id,-->
+<!--      name as mobile,-->
+<!--      qq as qq,-->
+<!--      type as type,-->
+<!--      time as time,-->
+<!--      link as link,-->
+<!--      create_at as createAt,-->
+<!--      create_by as createBy,-->
+<!--      update_at as updateAt,-->
+<!--      update_by as updateBy-->
+<!--      from user-->
+<!--      where-->
+<!--      id = #{id}-->
+<!--      and name = #{name}-->
+<!--   </select>-->
+
+    <select id="selectObject" resultMap="userMap">
+      select
+      *
+      from user
+      where
+      id = #{id}
+   </select>
+
+
+
+    <select id="selectList" resultMap="userMap">
+      select
+      <include refid="common"/>
+      from user
+   </select>
+
+
+</mapper>
