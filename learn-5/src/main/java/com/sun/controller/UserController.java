@@ -127,6 +127,35 @@ public class UserController {
         return  user;
     }
 
+    /**
+     * 查询用户详情
+     *
+     * @param id 用户id
+     * @return 结果
+     */
+    @RequestMapping(value = "/a/user/test/{id}",method = RequestMethod.GET)
+    @ResponseBody
+    public User getUserTest(@PathVariable Long id){
+        logger.info("你好世界");
+        System.out.println("---------------------------------------------------------");
+        User user = userService.selectObject(id);
+
+        User user1 = new User();
+        user1.setId(0L);
+        user1.setName("");
+        user1.setQq("");
+        user1.setType(0);
+        user1.setTime(0L);
+        user1.setLink("");
+        user1.setCreateAt(0L);
+        user1.setCreateBy(0L);
+        user1.setUpdateAt(0L);
+        user1.setUpdateBy(0L);
+
+
+        logger.info("user is : "+user);
+        return  user;
+    }
 
 
 
