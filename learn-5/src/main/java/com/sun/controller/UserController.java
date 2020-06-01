@@ -189,7 +189,7 @@ public class UserController {
                    userList = userService.selectList();
                    redisTemplate.opsForValue().set(name, userList);
                }
-                logger.info("使用缓存  time = "+(System.currentTimeMillis()-time)+"  userlist size is ");
+                logger.info("使用缓存  time = "+(System.currentTimeMillis()-time)+"  userlist size is "+userList.size());
             }else {
                 userList = userService.selectList();
                 logger.info("不用缓存  time = "+(System.currentTimeMillis()-time)+"  userlist size is "+userList.size());
