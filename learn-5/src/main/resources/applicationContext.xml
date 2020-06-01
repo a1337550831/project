@@ -7,7 +7,6 @@
     <!--开启扫描-->
     <context:component-scan base-package="com.sun"/>
 
-
     <!-- 加载配置文件 -->
     <context:property-placeholder location="classpath:properties/db.properties"/>
 
@@ -32,7 +31,49 @@
         <property name="basePackage" value="com.sun.dao"/>
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
     </bean>
+    <!-- redis数据源 -->
+    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <!-- 最大空闲数 -->
+        <property name="maxIdle" value="20" />
+        <!-- 最大空连接数 -->
+        <property name="maxTotal" value="10" />
+        <!-- 最大等待时间 -->
+        <property name="maxWaitMillis" value="1000" />
+        <!-- 返回连接时，检测连接是否成功 -->
+        <property name="testOnBorrow" value="true" />
+    </bean>
 
+    <!-- Spring-redis连接池管理工厂 -->
+    <bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+        <!-- IP地址 -->
+        <property name="hostName" value="127.0.0.1" />
+        <!-- 端口号 -->
+        <property name="port" value="6379" />
+        <property name="password" value="" />
+        <!-- 超时时间 默认2000-->
+        <!-- 连接池配置引用 -->
+        <property name="poolConfig" ref="poolConfig" />
+        <!-- usePool：是否使用连接池 -->
+        <property name="usePool" value="true"/>
+    </bean>
+
+    <!-- redis template definition -->
+    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+        <property name="connectionFactory" ref="jedisConnectionFactory" />
+        <property name="keySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="valueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
+        <property name="hashKeySerializer">
+            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+        </property>
+        <property name="hashValueSerializer">
+            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+        </property>
+
+    </bean>
 
 
 

@@ -6,10 +6,12 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 新增用户
@@ -175,12 +179,25 @@ public class UserController {
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status",0);
         try {
-            List<User> userList  = userService.selectList();
-            logger.info("time = "+(System.currentTimeMillis()-time)+"  userlist size is "+userList.size());
+
+            List<User> userList = new ArrayList<>();
+            if(null!=name){
+                redisTemplate.opsForValue().get(name);
+                Object object = redisTemplate.opsForValue().get(name);
+                userList = (List<User>)object;
+               if(null == object){
+                   userList = userService.selectList();
+                   redisTemplate.opsForValue().set(name, userList);
+               }
+                logger.info("使用缓存  time = "+(System.currentTimeMillis()-time)+"  userlist size is ");
+            }else {
+                userList = userService.selectList();
+                logger.info("不用缓存  time = "+(System.currentTimeMillis()-time)+"  userlist size is "+userList.size());
+            }
+
             resultMap.put("data", userList);
         }catch (Exception e){
-            e.getMessage();
-            logger.error(e.getMessage());
+            logger.error(e.getMessage(),e);
             resultMap.put("status", -1);
         }
         return resultMap;

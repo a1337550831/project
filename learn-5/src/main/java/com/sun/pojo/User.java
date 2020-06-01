@@ -1,7 +1,9 @@
 package com.sun.pojo;
 
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = -1860074019167672967L;
     private Long id;
     private String name;
     private String qq;
