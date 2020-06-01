@@ -186,7 +186,7 @@ public class UserController {
                 Object object = redisTemplate.opsForValue().get(name);
                 userList = (List<User>)object;
                if(null == object){
-                   logger.info("进入缓存？");
+                   logger.info("进入缓存？    ");
                    userList = userService.selectList();
                    redisTemplate.opsForValue().set(name, userList);
                }
