@@ -169,13 +169,14 @@ public class UserController {
     public Map<String, Object> getUserList(@PathVariable Long id,
                                            String name,
                                            @RequestParam("test") String dog){
-
+        Long time = System.currentTimeMillis();
         logger.info("id is : "+id +" name is : "+name+"  gog is : "+dog);
 
         Map<String, Object> resultMap = new HashMap<>();
         resultMap.put("status",0);
         try {
             List<User> userList  = userService.selectList();
+            logger.info("time = "+(System.currentTimeMillis()-time)+"  userlist size is "+userList.size());
             resultMap.put("data", userList);
         }catch (Exception e){
             e.getMessage();
