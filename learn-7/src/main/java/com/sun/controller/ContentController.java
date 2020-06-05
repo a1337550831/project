@@ -18,6 +18,7 @@ public class ContentController {
     @Autowired
     private ContentService contentService;
     Logger logger = Logger.getLogger(ContentController.class);
+
     @ResponseBody
     @RequestMapping(value = "/a/u/content",method = RequestMethod.POST)
     public Map<String,Object> addContent(Content content){
